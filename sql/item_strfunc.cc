@@ -2566,11 +2566,11 @@ String *Item_func_soundex::val_str(String *str)
 const int FORMAT_MAX_DECIMALS= 30;
 
 
-MY_LOCALE *Item_func_format::get_locale(Item *item)
+const MY_LOCALE *get_locale(Item *item)
 {
-  DBUG_ASSERT(arg_count == 3);
-  String tmp, *locale_name= args[2]->val_str_ascii(&tmp);
-  MY_LOCALE *lc;
+  StringBuffer<MAX_FIELD_WIDTH> tmp;
+  String *locale_name= item->val_str_ascii(&tmp);
+  const MY_LOCALE *lc;
   if (!locale_name ||
       !(lc= my_locale_by_name(locale_name->c_ptr_safe())))
   {
@@ -2610,7 +2610,7 @@ String *Item_func_format::val_str_ascii(String *str)
   int dec;
   /* Number of characters used to represent the decimals, including '.' */
   uint32 dec_length;
-  MY_LOCALE *lc;
+  const MY_LOCALE *lc;
   DBUG_ASSERT(fixed == 1);
 
   dec= (int) args[1]->val_int();

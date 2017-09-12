@@ -28,6 +28,7 @@
 extern size_t username_char_length;
 
 class MY_LOCALE;
+const MY_LOCALE *get_locale(Item *item);
 
 class Item_str_func :public Item_func
 {
@@ -842,14 +843,13 @@ public:
 
 class Item_func_format :public Item_str_ascii_func
 {
-  MY_LOCALE *locale;
+  const MY_LOCALE *locale;
 public:
   Item_func_format(THD *thd, Item *org, Item *dec):
     Item_str_ascii_func(thd, org, dec) {}
   Item_func_format(THD *thd, Item *org, Item *dec, Item *lang):
     Item_str_ascii_func(thd, org, dec, lang) {}
 
-  MY_LOCALE *get_locale(Item *item);
   String *val_str_ascii(String *);
   void fix_length_and_dec();
   const char *func_name() const { return "format"; }
