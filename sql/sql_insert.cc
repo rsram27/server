@@ -1180,7 +1180,8 @@ values_loop_end:
       (!table->triggers || !table->triggers->has_delete_triggers()))
     table->file->extra(HA_EXTRA_WRITE_CANNOT_REPLACE);
 
-  if (error)
+  /* We check thd->error() because it can be set by conversion problem. */
+  if (error || thd->is_error())
     goto abort;
   if (thd->lex->analyze_stmt)
   {

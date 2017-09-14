@@ -717,3 +717,14 @@ insert ignore into t1 values (1,12);
 Warnings:
 Warning	1062	Duplicate entry '1' for key 'f1'
 DROP TABLE t1;
+#
+# MDEV-13290 Assertion Assertion `!is_set() || (m_status == DA_OK_BULK
+# && is_bulk_op())' or `! is_set()' failed
+#
+SET sql_mode= 'STRICT_ALL_TABLES';
+CREATE TABLE t1 (f1 INT DEFAULT 0, f2 INT);
+CREATE ALGORITHM = MERGE VIEW v1 AS SELECT f1, f2 FROM t1 WHERE f1 = '' WITH CHECK OPTION;
+REPLACE INTO v1 SET f2 = 1;
+ERROR 22007: Truncated incorrect DOUBLE value: ''
+DROP VIEW v1;
+DROP TABLE t1;
