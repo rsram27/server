@@ -1,5 +1,6 @@
 # This is the DDL function tests for innodb FTS
 
+-- source include/innodb_encrypt_log.inc
 -- source include/have_innodb.inc
 
 # Create FTS table
